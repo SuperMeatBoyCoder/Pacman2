@@ -270,6 +270,7 @@ class Game:
         self.displayBerries()
         self.displayLives()
         self.drawBerry()
+        self.displayInstruction()
         if not self.gameOver:
             self.pacman.draw()
             self.displayFingers()
@@ -284,6 +285,15 @@ class Game:
             pygame.mixer.music.load(MusicPath + music)
             pygame.mixer.music.queue(MusicPath + music)
             pygame.mixer.music.play()
+
+    @staticmethod
+    def displayInstruction():
+        okay = charsImages["okay"]
+        okay = pygame.transform.scale(okay, (int(square * spriteRatio), int(square * spriteRatio)))
+        screen.blit(okay, (6 * square, 34 * square))
+        for i, char in enumerate("TAP_TO_SET_TARGET"):
+            letter = charsImages[char]
+            screen.blit(letter, ((7 + i) * square + square // 2, 34 * square + square // 2))
 
     @staticmethod
     def forcePlayMusic(music):
@@ -389,7 +399,6 @@ class Game:
 
     def displayLives(self):
         # 33 rows || 28 cols
-        # Lives[[31, 5], [31, 3], [31, 1]]
         livesLoc = [[34, 3], [34, 1]]
         for i in range(self.lives - 1):
             lifeImage = loadElement(54)
@@ -494,7 +503,7 @@ class Game:
             thumbTip = results.multi_hand_landmarks[0].landmark[4]
             thumbTip = (thumbTip.x - ignore) / (1 - 2 * ignore), (thumbTip.y - ignore) / (1 - 2 * ignore)
             dis = (thumbTip[0] * n - indexTip[0] * n) ** 2 + (thumbTip[1] * m - indexTip[1] * m) ** 2
-            if dis < 3000:
+            if dis < 0.01 * n * m:
                 tapPoint = (thumbTip[0] + indexTip[0]) / 2, (thumbTip[1] + indexTip[1]) / 2
                 self.pacman.setTarget(int(tapPoint[1] * height) // square, int(tapPoint[0] * width) // square)
                 tap = True
@@ -519,12 +528,12 @@ class Pacman:
     def isValid(cRow, cCol):
         if cCol < 0 or cCol > len(gameBoard[0]) - 1:
             return True
+        if gameBoard[cRow][cCol] == 3 or gameBoard[cRow][cCol] == 4:
+            return False
         for ghost in game.ghosts:
             if int(ghost.row) == cRow and int(ghost.col) == cCol and not ghost.attacked and not ghost.dead:
                 return False
         if not ghostGate.count([cRow, cCol]) == 0:
-            return False
-        if gameBoard[cRow][cCol] == 3:
             return False
         return True
 
