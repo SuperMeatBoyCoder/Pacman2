@@ -64,7 +64,7 @@ spriteRatio = 3 / 2
 square = 20  # Size of each unit square
 FPS = 30
 spriteOffset = square * (1 - spriteRatio) * (1 / 2)
-(width, height) = (len(gameBoard[0]) * square, len(gameBoard) * square)  # Game screen
+(width, height) = (len(gameBoard[0]) * square, len(gameBoard) * square)
 screen = pygame.display.set_mode((width, height))
 pygame.display.flip()
 pelletColor = (222, 161, 133)
@@ -144,7 +144,7 @@ class Game:
         self.fingers = [(0, 0), (INF, INF)]
         self.gameOver = False
 
-    # Driver method: The games primary update method
+    # Main update method
     def update(self):
 
         self.tictakChangeCount += 1
@@ -230,13 +230,11 @@ class Game:
 
     # Render method
     def render(self):
-        screen.fill((0, 0, 0))  # Flushes the screen
-        # Draws game elements
+        screen.fill((0, 0, 0))
         currentTile = 0
         for i in range(3, len(gameBoard) - 2):
             for j in range(len(gameBoard[0])):
                 if gameBoard[i][j] == 3:  # Draw wall
-
                     # Display image of tile
                     screen.blit(boardImage, (j * square, i * square), (j * square, (i - 3) * square, square, square))
 
@@ -487,10 +485,9 @@ class Game:
     def getTarget(self):
         ret, frame = cap.read()
         imgBGR = np.fliplr(frame)
-        # переводим его в формат RGB для распознавания
         imgRGB = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2RGB)
         m, n = imgRGB.shape[:2]
-        # Распознаем
+        # Detecting hand
         results = handsDetector.process(imgRGB)
         imgRGB.fill(0)
         indexTip = (0, 0)
@@ -503,7 +500,7 @@ class Game:
             thumbTip = results.multi_hand_landmarks[0].landmark[4]
             thumbTip = (thumbTip.x - ignore) / (1 - 2 * ignore), (thumbTip.y - ignore) / (1 - 2 * ignore)
             dis = (thumbTip[0] * n - indexTip[0] * n) ** 2 + (thumbTip[1] * m - indexTip[1] * m) ** 2
-            if dis < 0.01 * n * m:
+            if dis < 0.01 * n * m:  # Tap registered
                 tapPoint = (thumbTip[0] + indexTip[0]) / 2, (thumbTip[1] + indexTip[1]) / 2
                 self.pacman.setTarget(int(tapPoint[1] * height) // square, int(tapPoint[0] * width) // square)
                 tap = True
