@@ -842,6 +842,7 @@ displayLaunchScreen()
 clock = pygame.time.Clock()
 
 frames = 0
+startTime = time.time()
 
 while running:
     frames += 1
