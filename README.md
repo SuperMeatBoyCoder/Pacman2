@@ -44,8 +44,7 @@ https://github.com/user-attachments/assets/165db425-8842-4642-a3b6-b6a31a2cd5f2
 ## Credits
 
 Game programmed by Marat Ashirov as a school IT project.
-Base code taken from [DevinLeamy](https://github.com/DevinLeamy/Pacman). go check it out!
-README inspired by [Nikita Shilov](https://github.com/STIPCHIK).
+Base code taken from @DevinLeamy ([project](https://github.com/DevinLeamy/Pacman)). go check it out!
 
 ## Status
 
