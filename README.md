@@ -34,9 +34,11 @@ I recommend you to play:
     With good lighting
     Skin-contrasting clothing
 
-============================Screenshots=============================
+============================Teaser=============================
 
-// TODO
+
+https://github.com/user-attachments/assets/165db425-8842-4642-a3b6-b6a31a2cd5f2
+
 
 ==============================Credits===============================
 
